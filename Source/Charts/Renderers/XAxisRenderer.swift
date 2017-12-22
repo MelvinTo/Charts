@@ -53,9 +53,19 @@ open class XAxisRenderer: AxisRendererBase
         computeAxisValues(min: min, max: max)
     }
     
+    open var customizeLabelMinMax : Bool = false
+    open var labelMin : Double = 0 
+    open var labelMax : Double = 0
+    open var xMin: Double = 0
+    open var xMax: Double = 0
+    
     open override func computeAxisValues(min: Double, max: Double)
-    {
-        super.computeAxisValues(min: min, max: max)
+    {                
+        if customizeLabelMinMax {
+            super.computeAxisValues(min: labelMin, max: labelMax)
+        } else {
+            super.computeAxisValues(min: min, max: max)
+        }
         
         computeSize()
     }
@@ -222,7 +232,7 @@ open class XAxisRenderer: AxisRendererBase
                 if xAxis.isAvoidFirstLastClippingEnabled
                 {
                     // avoid clipping of the last
-                    if i == xAxis.entryCount - 1 && xAxis.entryCount > 1
+                    if i == xAxis.entryCount - 1 && xAxis.entryCount > 1 && xAxis.entries[i] >= (xMax - 1)
                     {
                         let width = labelns.boundingRect(with: labelMaxSize, options: .usesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
                         
@@ -230,12 +240,14 @@ open class XAxisRenderer: AxisRendererBase
                             && position.x + width > viewPortHandler.chartWidth
                         {
                             position.x -= width / 2.0
+                            position.x += (CGFloat) ((xMax - xAxis.entries[i]) * 10.0)
                         }
                     }
-                    else if i == 0
+                    else if i == 0 && xAxis.entries[0] <= (xMin + 1)
                     { // avoid clipping of the first
                         let width = labelns.boundingRect(with: labelMaxSize, options: .usesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
                         position.x += width / 2.0
+                        position.x -= (CGFloat) ((xAxis.entries[i] - xMin) * 10.0)
                     }
                 }
                 

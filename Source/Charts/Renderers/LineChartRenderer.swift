@@ -26,6 +26,8 @@ open class LineChartRenderer: LineRadarRenderer
     private lazy var accessibilityOrderedElements: [[NSUIAccessibilityElement]] = accessibilityCreateEmptyOrderedElements()
 
     @objc open weak var dataProvider: LineChartDataProvider?
+    open var minCirclePoint: Int = 0
+    open var cicleHoleInHoleRadius : CGFloat = 0;
     
     @objc public init(dataProvider: LineChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler)
     {
@@ -649,7 +651,7 @@ open class LineChartRenderer: LineRadarRenderer
                 (dataSet.circleHoleColor == nil ||
                     dataSet.circleHoleColor == NSUIColor.clear)
             
-            for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
+            for j in stride(from: _xBounds.min + self.minCirclePoint, through: _xBounds.range + _xBounds.min, by: 1)
             {
                 guard let e = dataSet.entryForIndex(j) else { break }
 
@@ -695,6 +697,11 @@ open class LineChartRenderer: LineRadarRenderer
 
                 context.setFillColor(dataSet.getCircleColor(atIndex: j)!.cgColor)
 
+                                
+                let x = dataSet.getCircleColor(atIndex: j)!.withAlphaComponent(0.5)
+                                
+                context.setFillColor(x.cgColor)
+                
                 rect.origin.x = pt.x - circleRadius
                 rect.origin.y = pt.y - circleRadius
                 rect.size.width = circleDiameter
@@ -729,6 +736,16 @@ open class LineChartRenderer: LineRadarRenderer
                         rect.origin.y = pt.y - circleHoleRadius
                         rect.size.width = circleHoleDiameter
                         rect.size.height = circleHoleDiameter
+                        
+                        context.fillEllipse(in: rect)
+                        
+                        context.setFillColor(dataSet.circleColors[0].cgColor)
+                        
+                        // The hole rect
+                        rect.origin.x = pt.x - circleHoleRadius + cicleHoleInHoleRadius
+                        rect.origin.y = pt.y - circleHoleRadius + cicleHoleInHoleRadius
+                        rect.size.width = circleHoleDiameter - (cicleHoleInHoleRadius * 2)
+                        rect.size.height = circleHoleDiameter - (cicleHoleInHoleRadius * 2)
                         
                         context.fillEllipse(in: rect)
                     }
