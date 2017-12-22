@@ -697,7 +697,6 @@ open class LineChartRenderer: LineRadarRenderer
 
                 context.setFillColor(dataSet.getCircleColor(atIndex: j)!.cgColor)
 
-                                
                 let x = dataSet.getCircleColor(atIndex: j)!.withAlphaComponent(0.5)
                                 
                 context.setFillColor(x.cgColor)
