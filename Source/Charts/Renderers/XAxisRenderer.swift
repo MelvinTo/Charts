@@ -53,11 +53,11 @@ open class XAxisRenderer: AxisRendererBase
         computeAxisValues(min: min, max: max)
     }
     
-    open var customizeLabelMinMax : Bool = false
-    open var labelMin : Double = 0 
-    open var labelMax : Double = 0
-    open var xMin: Double = 0
-    open var xMax: Double = 0
+    @obj open var customizeLabelMinMax : Bool = false
+    @obj open var labelMin : Double = 0 
+    @obj open var labelMax : Double = 0
+    @obj open var xMin: Double = 0
+    @obj open var xMax: Double = 0
     
     open override func computeAxisValues(min: Double, max: Double)
     {                
