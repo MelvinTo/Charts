@@ -26,8 +26,8 @@ open class LineChartRenderer: LineRadarRenderer
     private lazy var accessibilityOrderedElements: [[NSUIAccessibilityElement]] = accessibilityCreateEmptyOrderedElements()
 
     @objc open weak var dataProvider: LineChartDataProvider?
-    open var minCirclePoint: Int = 0
-    open var cicleHoleInHoleRadius : CGFloat = 0;
+    @objc open var minCirclePoint: Int = 0
+    @objc open var cicleHoleInHoleRadius : CGFloat = 0;
     
     @objc public init(dataProvider: LineChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler)
     {
